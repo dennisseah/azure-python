@@ -11,8 +11,12 @@ import os
 from dotenv import load_dotenv
 from lagom import Container, dependency_definition
 
+from azure_python.protocols.i_adversarial_simulation_service import (
+    IAdversarialSimulationService,
+)
 from azure_python.protocols.i_azure_blob_storage_service import IAzureBlobStorageService
 from azure_python.protocols.i_azure_openai_service import IAzureOpenAIService
+from azure_python.protocols.i_mlflow_service import IMLFlowService
 
 load_dotenv(dotenv_path=".env")
 
@@ -47,3 +51,24 @@ def azure_openai_service() -> IAzureOpenAIService:
     )
 
     return container[AzureOpenAIService]
+
+
+@dependency_definition(container, singleton=True)
+def mlflow_service() -> IMLFlowService:
+    if os.getenv("LOCAL_MLFLOW", "false").lower() == "true":
+        from azure_python.services.mlflow_service import MLFlowService
+
+        return container[MLFlowService]
+
+    from azure_python.services.azure_mlflow_service import AzureMLFlowService
+
+    return container[AzureMLFlowService]
+
+
+@dependency_definition(container, singleton=True)
+def adversarial_simulation_service() -> IAdversarialSimulationService:
+    from azure_python.services.adversarial_simulation_service import (
+        AdversarialSimulationService,
+    )
+
+    return container[AdversarialSimulationService]

@@ -30,6 +30,8 @@ intended to be a living document that we update as needed.
 | 1.3      | 2025Mar27 | Dennis Seah | added information on uv           |
 | 1.4      | 2025Dec14 | Dennis Seah | added azure storage service       |
 | 1.4      | 2025Dec14 | Dennis Seah | added openai service              |
+| 1.5      | 2025Dec14 | Dennis Seah | added adversarial simulation svc  |
+| 1.5      | 2025Dec14 | Dennis Seah | addded mlflow service             |
 
 ---
 

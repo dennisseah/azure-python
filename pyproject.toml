@@ -6,10 +6,15 @@ readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "aiohttp>=3.13.2",
+    "azure-ai-evaluation>=1.13.7",
+    "azure-ai-ml>=1.30.0",
     "azure-core>=1.37.0",
     "azure-identity>=1.25.1",
-    "azure-storage-blob>=12.27.1",
+    "azure-storage-blob>=12.19.0",
+    "azureml-mlflow>=1.61.0.post1",
+    "cryptography>=42.0.2",
     "lagom>=2.7.7",
+    "mlflow>=3.2.1",
     "openai>=2.11.0",
     "pre-commit>=4.5.0",
     "pydantic>=2.12.5",

@@ -10,6 +10,16 @@ tasks:
     cmds:
       - uv run python -m samples.azure_blob_storage_service
 
+  sample-azure-mlflow-service:
+    desc: "Runs the Azure MLFlow Service sample"
+    cmds:
+      - uv run python -m samples.azure_mlflow_service
+
+  sample-azure_foundry_adv_sim:
+    desc: "Runs the Azure Foundry Adversarial Simulation sample"
+    cmds:
+      - uv run python -m samples.azure_foundry_adv_sim
+
   test-unit:
     desc: "Runs unit tests with pytest"
     cmds:

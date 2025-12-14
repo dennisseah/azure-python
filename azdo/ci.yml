@@ -32,7 +32,7 @@ steps:
     displayName: "Run package scanning"
     condition: succeededOrFailed()
   - script: |
-      python -m pytest --doctest-modules --junitxml=junit/test-results.xml --cov=python_guide --cov-report=xml tests
+      python -m pytest --doctest-modules --junitxml=junit/test-results.xml --cov=azure_python --cov-report=xml tests
     displayName: "Run tests"
   - task: PublishTestResults@2
     condition: succeededOrFailed()
@@ -44,5 +44,3 @@ steps:
     inputs:
       summaryFileLocation: "$(System.DefaultWorkingDirectory)/**/coverage.xml"
     displayName: "Publish coverage results"
-
-
