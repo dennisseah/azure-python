@@ -1,0 +1,51 @@
+from typing import Any, Protocol
+
+from openai import AsyncAzureOpenAI
+from openai.types.chat import ChatCompletionMessageParam
+
+from azure_python.models.llm_response import LLMResponse
+
+
+class IAzureOpenAIService(Protocol):
+    def get_client(self) -> AsyncAzureOpenAI:
+        """
+        Get the Azure OpenAI client.
+
+        :return: An instance of AsyncAzureOpenAI.
+        """
+        ...
+
+    def get_deployed_model_name(self) -> str:
+        """
+        Get the name of the deployed model.
+
+        :return: The name of the deployed model.
+        """
+        ...
+
+    async def chat_completion(
+        self, messages: list[ChatCompletionMessageParam], temperature: float = 1.0
+    ) -> LLMResponse:
+        """
+        Perform a chat completion using the Azure OpenAI client.
+
+        :param messages: The messages to send in the chat completion.
+        :return: The content of the response message.
+        """
+        ...
+
+    async def chat_completion_with_format(
+        self,
+        messages: list[ChatCompletionMessageParam],
+        response_format: Any,
+        temperature: float = 1.0,
+    ) -> LLMResponse:
+        """
+        Perform a chat completion and parse the response into the specified format.
+
+        :param messages: The messages to send in the chat completion.
+        :param response_format: The format to parse the response into.
+        :param temperature: The temperature for the completion.
+        :return: The parsed response.
+        """
+        ...
