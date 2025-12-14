@@ -1,5 +1,10 @@
 version: "3"
 tasks:
+  sample-azure-cosmos-service:
+    desc: "Runs the Azure Cosmos Service sample"
+    cmds:
+      - uv run python -m samples.azure_cosmos_service
+
   sample-azure-openai-service:
     desc: "Runs the Azure OpenAI Service sample"
     cmds:

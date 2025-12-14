@@ -15,6 +15,7 @@ from azure_python.protocols.i_adversarial_simulation_service import (
     IAdversarialSimulationService,
 )
 from azure_python.protocols.i_azure_blob_storage_service import IAzureBlobStorageService
+from azure_python.protocols.i_azure_cosmos_service import IAzureCosmosService
 from azure_python.protocols.i_azure_openai_service import IAzureOpenAIService
 from azure_python.protocols.i_mlflow_service import IMLFlowService
 
@@ -72,3 +73,12 @@ def adversarial_simulation_service() -> IAdversarialSimulationService:
     )
 
     return container[AdversarialSimulationService]
+
+
+@dependency_definition(container, singleton=True)
+def azure_cosmos_service() -> IAzureCosmosService:
+    from azure_python.services.azure_cosmos_service import (
+        AzureCosmosService,
+    )
+
+    return container[AzureCosmosService]
