@@ -28,7 +28,7 @@ def fn_mock_service(mocker: MockerFixture) -> Callable[[bool], AzureOpenAIServic
         env = MagicMock()
         if not with_api_key:
             env.azure_openai_api_key = None
-        svc = AzureOpenAIService(env=env)
+        svc = AzureOpenAIService(env=env, content_safety_eval=MagicMock())
         patched_azure_openai.assert_called_once()
         return svc
 
@@ -76,8 +76,9 @@ async def test_chat_completion(
         )
     )
     messages = [{"role": "user", "content": "Test message"}]
-    response = await mock_service.chat_completion(messages)
-    assert response.content == "Test response"
+    responses = await mock_service.chat_completion(messages)
+    assert responses[0].content == "Test response"
+    mock_service.content_safety_eval.content_safety_check.assert_called_once()
 
 
 @pytest.mark.asyncio
@@ -99,8 +100,10 @@ async def test_chat_completion_with_format(
     )
     messages = [{"role": "user", "content": "Test message"}]
     response_format = MagicMock()  # Mock the response format as needed
-    response = await mock_service.chat_completion_with_format(messages, response_format)
-    assert response.content == "Formatted response"
+    responses = await mock_service.chat_completion_with_format(
+        messages, response_format
+    )
+    assert responses[0].content == "Formatted response"
 
 
 @pytest.mark.asyncio
@@ -114,6 +117,6 @@ async def test_chat_completion_with_format_err(
     )
     messages = [{"role": "user", "content": "Test message"}]
     response_format = MagicMock()  # Mock the response format as needed
-    response = await mock_service.chat_completion_with_format(messages, response_format)
-    assert response.content == "API error"
-    assert response.finish_reason == "error"
+
+    with pytest.raises(Exception):
+        await mock_service.chat_completion_with_format(messages, response_format)

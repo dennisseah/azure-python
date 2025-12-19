@@ -24,12 +24,17 @@ class IAzureOpenAIService(Protocol):
         ...
 
     async def chat_completion(
-        self, messages: list[ChatCompletionMessageParam], temperature: float = 1.0
-    ) -> LLMResponse:
+        self,
+        messages: list[ChatCompletionMessageParam],
+        temperature: float = 1.0,
+        num_generations: int = 1,
+    ) -> list[LLMResponse]:
         """
         Perform a chat completion using the Azure OpenAI client.
 
         :param messages: The messages to send in the chat completion.
+        :param temperature: The temperature for the completion.
+        :param num_generations: The number of generations to produce.
         :return: The content of the response message.
         """
         ...
@@ -39,13 +44,15 @@ class IAzureOpenAIService(Protocol):
         messages: list[ChatCompletionMessageParam],
         response_format: Any,
         temperature: float = 1.0,
-    ) -> LLMResponse:
+        num_generations: int = 1,
+    ) -> list[LLMResponse]:
         """
         Perform a chat completion and parse the response into the specified format.
 
         :param messages: The messages to send in the chat completion.
         :param response_format: The format to parse the response into.
         :param temperature: The temperature for the completion.
+        :param num_generations: The number of generations to produce.
         :return: The parsed response.
         """
         ...

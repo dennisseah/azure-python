@@ -16,10 +16,12 @@ async def main() -> None:
             {"role": "user", "content": "List 5 programming languages."},
         ],
         temperature=1,
+        num_generations=2,
     )
 
     print("Chat Completion Response:")
-    print(responses.model_dump_json(indent=2))
+    for response in responses:
+        print(response.model_dump_json(indent=2))
 
 
 if __name__ == "__main__":

@@ -5,6 +5,7 @@ from azure.identity import DefaultAzureCredential, get_bearer_token_provider
 from lagom.environment import Env
 from openai import AsyncAzureOpenAI
 from openai.types.chat import (
+    ChatCompletion,
     ChatCompletionMessageParam,
 )
 
@@ -12,6 +13,7 @@ from azure_python.models.llm_response import LLMResponse
 from azure_python.protocols.i_azure_openai_service import (
     IAzureOpenAIService,
 )
+from azure_python.protocols.i_openai_content_evaluator import IOpenAIContentEvaluator
 
 
 class AzureOpenAIServiceEnv(Env):
@@ -28,6 +30,7 @@ class AzureOpenAIService(IAzureOpenAIService):
     """
 
     env: AzureOpenAIServiceEnv
+    content_safety_eval: IOpenAIContentEvaluator
 
     def __post_init__(self) -> None:
         self.client = self.get_client()
@@ -52,49 +55,58 @@ class AzureOpenAIService(IAzureOpenAIService):
     def get_deployed_model_name(self) -> str:
         return self.env.azure_openai_deployed_model_name
 
+    def collection_results(
+        self, responses: ChatCompletion, num_generations: int
+    ) -> list[LLMResponse]:
+        self.content_safety_eval.content_safety_check(responses)
+
+        usages = responses.usage.model_dump() if responses.usage else {}
+        usages = {k: v for k, v in usages.items() if isinstance(v, int)}
+        usages["completion_tokens"] = int(
+            usages.get("completion_tokens", 0) / num_generations
+        )
+
+        results = []
+        for choice in responses.choices:
+            results.append(
+                LLMResponse(
+                    content=choice.message.content if choice.message else "",
+                    finish_reason=choice.finish_reason,
+                    usages=usages,
+                )
+            )
+        return results
+
     async def chat_completion(
-        self, messages: list[ChatCompletionMessageParam], temperature: float = 1.0
-    ) -> LLMResponse:
+        self,
+        messages: list[ChatCompletionMessageParam],
+        temperature: float = 1.0,
+        num_generations: int = 1,
+    ) -> list[LLMResponse]:
         self.client = self.get_client()
         response = await self.client.chat.completions.create(
             model=self.env.azure_openai_deployed_model_name,
             messages=messages,
             temperature=temperature,
+            n=num_generations,
         )
 
-        usages = response.usage.model_dump() if response.usage else {}
-        usages = {k: v for k, v in usages.items() if isinstance(v, int)}
-
-        return LLMResponse(
-            content=response.choices[0].message.content if response.choices else "",
-            finish_reason=response.choices[0].finish_reason if response.choices else "",
-            usages=usages,
-        )
+        return self.collection_results(response, num_generations)
 
     async def chat_completion_with_format(
         self,
         messages: list[ChatCompletionMessageParam],
         response_format: Any,
         temperature: float = 1.0,
-    ) -> LLMResponse:
-        try:
-            self.client = self.get_client()
-            response = await self.client.chat.completions.parse(
-                model=self.env.azure_openai_deployed_model_name,
-                messages=messages,
-                response_format=response_format,
-                temperature=temperature,
-            )
+        num_generations: int = 1,
+    ) -> list[LLMResponse]:
+        self.client = self.get_client()
+        responses = await self.client.chat.completions.parse(
+            model=self.env.azure_openai_deployed_model_name,
+            messages=messages,
+            response_format=response_format,
+            temperature=temperature,
+            n=num_generations,
+        )
 
-            usages = response.usage.model_dump() if response.usage else {}
-            usages = {k: v for k, v in usages.items() if isinstance(v, int)}
-
-            return LLMResponse(
-                content=response.choices[0].message.content if response.choices else "",
-                finish_reason=response.choices[0].finish_reason
-                if response.choices
-                else "",
-                usages=usages,
-            )
-        except Exception as e:
-            return LLMResponse(content=str(e), finish_reason="error", usages={})
+        return self.collection_results(responses, num_generations)

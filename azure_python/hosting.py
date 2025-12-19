@@ -18,6 +18,7 @@ from azure_python.protocols.i_azure_blob_storage_service import IAzureBlobStorag
 from azure_python.protocols.i_azure_cosmos_service import IAzureCosmosService
 from azure_python.protocols.i_azure_openai_service import IAzureOpenAIService
 from azure_python.protocols.i_mlflow_service import IMLFlowService
+from azure_python.protocols.i_openai_content_evaluator import IOpenAIContentEvaluator
 
 load_dotenv(dotenv_path=".env")
 
@@ -82,3 +83,12 @@ def azure_cosmos_service() -> IAzureCosmosService:
     )
 
     return container[AzureCosmosService]
+
+
+@dependency_definition(container, singleton=True)
+def openai_content_evaluator() -> IOpenAIContentEvaluator:
+    from azure_python.services.openai_content_evaluator import (
+        OpenAIContentEvaluator,
+    )
+
+    return container[OpenAIContentEvaluator]
