@@ -248,6 +248,21 @@ wheels = [
 ]
 
 [[package]]
+name = "azure-ai-textanalytics"
+version = "5.3.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "azure-common" },
+    { name = "azure-core" },
+    { name = "isodate" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/3c/f4/459094eca3819b5dbe01d816a135b71eb37f16b5b50944d8e1eaaa79b88a/azure-ai-textanalytics-5.3.0.zip", hash = "sha256:4f7d067d5bb08422599ca6175510d39b0911c711301647e5f18e904a5027bf58", size = 538663, upload-time = "2023-06-15T21:14:32.483Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/fa/29/58c3ec979ba9b6ce14db7f8bc96792d8c240e490704864bda39f06110964/azure_ai_textanalytics-5.3.0-py3-none-any.whl", hash = "sha256:69bb736d93de81060e9075d42b6f0b92c25be0fb106da5cb6a6d30e772168221", size = 298631, upload-time = "2023-06-15T21:14:36.369Z" },
+]
+
+[[package]]
 name = "azure-common"
 version = "1.1.28"
 source = { registry = "https://pypi.org/simple" }
@@ -373,6 +388,7 @@ dependencies = [
     { name = "azure-ai-evaluation" },
     { name = "azure-ai-inference" },
     { name = "azure-ai-ml" },
+    { name = "azure-ai-textanalytics" },
     { name = "azure-core" },
     { name = "azure-cosmos" },
     { name = "azure-identity" },
@@ -382,6 +398,7 @@ dependencies = [
     { name = "filelock" },
     { name = "lagom" },
     { name = "mlflow" },
+    { name = "nltk" },
     { name = "openai" },
     { name = "pre-commit" },
     { name = "pydantic" },
@@ -409,6 +426,7 @@ requires-dist = [
     { name = "azure-ai-evaluation", specifier = ">=1.13.7" },
     { name = "azure-ai-inference", specifier = ">=1.0.0b9" },
     { name = "azure-ai-ml", specifier = ">=1.30.0" },
+    { name = "azure-ai-textanalytics", specifier = ">=5.3.0" },
     { name = "azure-core", specifier = ">=1.37.0" },
     { name = "azure-cosmos", specifier = ">=4.14.3" },
     { name = "azure-identity", specifier = ">=1.24.0" },
@@ -418,6 +436,7 @@ requires-dist = [
     { name = "filelock", specifier = ">=3.20.1" },
     { name = "lagom", specifier = ">=2.7.7" },
     { name = "mlflow", specifier = ">=3.2.1" },
+    { name = "nltk", specifier = ">=3.9.2" },
     { name = "openai", specifier = ">=2.11.0" },
     { name = "pre-commit", specifier = ">=4.5.0" },
     { name = "pydantic", specifier = ">=2.12.5" },

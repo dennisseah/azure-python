@@ -39,6 +39,11 @@ tasks:
     cmds:
       - uv run python -m samples.azure_managed_redis_service
 
+  sample-azure-text-analytics-service:
+    desc: "Runs the Azure AI Text Analytics Service sample"
+    cmds:
+      - uv run python -m samples.azure_text_analytics_service
+
   test-unit:
     desc: "Runs unit tests with pytest"
     cmds:

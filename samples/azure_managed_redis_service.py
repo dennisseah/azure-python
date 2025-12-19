@@ -1,3 +1,5 @@
+import asyncio
+
 from azure_python.hosting import container
 from azure_python.protocols.i_azure_managed_redis_service import (
     IAzureManagedRedisService,
@@ -14,6 +16,4 @@ async def main() -> None:
 
 
 if __name__ == "__main__":
-    import asyncio
-
     asyncio.run(main())

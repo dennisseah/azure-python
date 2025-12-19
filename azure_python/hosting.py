@@ -20,6 +20,9 @@ from azure_python.protocols.i_azure_managed_redis_service import (
     IAzureManagedRedisService,
 )
 from azure_python.protocols.i_azure_openai_service import IAzureOpenAIService
+from azure_python.protocols.i_azure_text_analytics_service import (
+    IAzureTextAnalyticsService,
+)
 from azure_python.protocols.i_content_safety_service import IContentSafetyService
 from azure_python.protocols.i_embedding_service import IEmbeddingService
 from azure_python.protocols.i_mlflow_service import IMLFlowService
@@ -122,3 +125,12 @@ def azure_managed_redis_service() -> IAzureManagedRedisService:
     )
 
     return container[AzureManagedRedisService]
+
+
+@dependency_definition(container, singleton=True)
+def azure_ai_textanalytics_service() -> IAzureTextAnalyticsService:
+    from azure_python.services.azure_text_analytics_service import (
+        AzureTextAnalyticsService,
+    )
+
+    return container[AzureTextAnalyticsService]

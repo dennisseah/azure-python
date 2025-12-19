@@ -92,6 +92,9 @@ azure-ai-inference==1.0.0b9 \
 azure-ai-ml==1.30.0 \
     --hash=sha256:1e1a957e4d9d1c5068bf436e36594866a1ba680b51c6ed4fb32addad64840159 \
     --hash=sha256:fcd1c0ecad1ac50570883d6a5dc62f5c441eff7bf2d7241c2acb387c4de28a01
+azure-ai-textanalytics==5.3.0 \
+    --hash=sha256:4f7d067d5bb08422599ca6175510d39b0911c711301647e5f18e904a5027bf58 \
+    --hash=sha256:69bb736d93de81060e9075d42b6f0b92c25be0fb106da5cb6a6d30e772168221
 azure-common==1.1.28 \
     --hash=sha256:4ac0cd3214e36b6a1b6a442686722a5d8cc449603aa833f3f0f40bda836704a3 \
     --hash=sha256:5c12d3dcf4ec20599ca6b0d3e09e86e146353d443e7fcc050c9a19c1f9df20ad
