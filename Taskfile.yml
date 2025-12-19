@@ -24,15 +24,20 @@ tasks:
     cmds:
       - uv run python -m samples.azure_mlflow_service
 
-  sample-azure_foundry_adv_sim:
+  sample-azure-foundry-adv-sim:
     desc: "Runs the Azure Foundry Adversarial Simulation sample"
     cmds:
       - uv run python -m samples.azure_foundry_adv_sim
 
-  sample-embedding_service:
+  sample-embedding-service:
     desc: "Runs the Embedding Service sample"
     cmds:
       - uv run python -m samples.embedding_service
+
+  sample-azure-managed-redis-service:
+    desc: "Runs the Azure Managed Redis Service sample"
+    cmds:
+      - uv run python -m samples.azure_managed_redis_service
 
   test-unit:
     desc: "Runs unit tests with pytest"

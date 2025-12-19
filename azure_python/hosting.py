@@ -16,6 +16,9 @@ from azure_python.protocols.i_adversarial_simulation_service import (
 )
 from azure_python.protocols.i_azure_blob_storage_service import IAzureBlobStorageService
 from azure_python.protocols.i_azure_cosmos_service import IAzureCosmosService
+from azure_python.protocols.i_azure_managed_redis_service import (
+    IAzureManagedRedisService,
+)
 from azure_python.protocols.i_azure_openai_service import IAzureOpenAIService
 from azure_python.protocols.i_content_safety_service import IContentSafetyService
 from azure_python.protocols.i_embedding_service import IEmbeddingService
@@ -110,3 +113,12 @@ def embedding_service() -> IEmbeddingService:
     from azure_python.services.embedding_service import EmbeddingService
 
     return container[EmbeddingService]
+
+
+@dependency_definition(container, singleton=True)
+def azure_managed_redis_service() -> IAzureManagedRedisService:
+    from azure_python.services.azure_managed_redis_service import (
+        AzureManagedRedisService,
+    )
+
+    return container[AzureManagedRedisService]
