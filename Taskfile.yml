@@ -14,6 +14,10 @@ tasks:
     desc: "Runs the Azure Blob Storage Service sample"
     cmds:
       - uv run python -m samples.azure_blob_storage_service
+  sample-azure-content-safety-service:
+    desc: "Runs Azure Content Safety Service sample"
+    cmds:
+      - uv run python -m samples.azure_content_safety_service
 
   sample-azure-mlflow-service:
     desc: "Runs the Azure MLFlow Service sample"

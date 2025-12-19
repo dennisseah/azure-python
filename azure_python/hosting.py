@@ -17,6 +17,7 @@ from azure_python.protocols.i_adversarial_simulation_service import (
 from azure_python.protocols.i_azure_blob_storage_service import IAzureBlobStorageService
 from azure_python.protocols.i_azure_cosmos_service import IAzureCosmosService
 from azure_python.protocols.i_azure_openai_service import IAzureOpenAIService
+from azure_python.protocols.i_content_safety_service import IContentSafetyService
 from azure_python.protocols.i_mlflow_service import IMLFlowService
 from azure_python.protocols.i_openai_content_evaluator import IOpenAIContentEvaluator
 
@@ -92,3 +93,12 @@ def openai_content_evaluator() -> IOpenAIContentEvaluator:
     )
 
     return container[OpenAIContentEvaluator]
+
+
+@dependency_definition(container, singleton=True)
+def content_safety_service() -> IContentSafetyService:
+    from azure_python.services.content_safety_service import (
+        ContentSafetyService,
+    )
+
+    return container[ContentSafetyService]
