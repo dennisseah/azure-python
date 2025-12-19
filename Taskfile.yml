@@ -29,6 +29,11 @@ tasks:
     cmds:
       - uv run python -m samples.azure_foundry_adv_sim
 
+  sample-embedding_service:
+    desc: "Runs the Embedding Service sample"
+    cmds:
+      - uv run python -m samples.embedding_service
+
   test-unit:
     desc: "Runs unit tests with pytest"
     cmds:

@@ -86,6 +86,9 @@ azure-ai-contentsafety==1.0.0 \
 azure-ai-evaluation==1.13.7 \
     --hash=sha256:46232b168bd314f18bcbc7207c689df7643b5182e50165a869b2eed88cc7ddfe \
     --hash=sha256:b2683ce51d4060f47960d23948d2b6bb318297031545a4a487ced92e0e618bd6
+azure-ai-inference==1.0.0b9 \
+    --hash=sha256:1feb496bd84b01ee2691befc04358fa25d7c344d8288e99364438859ad7cd5a4 \
+    --hash=sha256:49823732e674092dad83bb8b0d1b65aa73111fab924d61349eb2a8cdc0493990
 azure-ai-ml==1.30.0 \
     --hash=sha256:1e1a957e4d9d1c5068bf436e36594866a1ba680b51c6ed4fb32addad64840159 \
     --hash=sha256:fcd1c0ecad1ac50570883d6a5dc62f5c441eff7bf2d7241c2acb387c4de28a01

@@ -18,6 +18,7 @@ from azure_python.protocols.i_azure_blob_storage_service import IAzureBlobStorag
 from azure_python.protocols.i_azure_cosmos_service import IAzureCosmosService
 from azure_python.protocols.i_azure_openai_service import IAzureOpenAIService
 from azure_python.protocols.i_content_safety_service import IContentSafetyService
+from azure_python.protocols.i_embedding_service import IEmbeddingService
 from azure_python.protocols.i_mlflow_service import IMLFlowService
 from azure_python.protocols.i_openai_content_evaluator import IOpenAIContentEvaluator
 
@@ -102,3 +103,10 @@ def content_safety_service() -> IContentSafetyService:
     )
 
     return container[ContentSafetyService]
+
+
+@dependency_definition(container, singleton=True)
+def embedding_service() -> IEmbeddingService:
+    from azure_python.services.embedding_service import EmbeddingService
+
+    return container[EmbeddingService]

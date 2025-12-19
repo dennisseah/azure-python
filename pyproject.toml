@@ -24,6 +24,7 @@ dependencies = [
     "urllib3>=2.6.2",
     "filelock>=3.20.1",
     "azure-ai-contentsafety>=1.0.0",
+    "azure-ai-inference>=1.0.0b9",
 ]
 
 [dependency-groups]

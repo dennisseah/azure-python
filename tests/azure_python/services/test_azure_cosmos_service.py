@@ -40,7 +40,9 @@ def mock_env() -> AzureCosmosServiceEnv:
 
 
 @pytest.mark.asyncio
-async def testget_cosmos_client(mocker: MockerFixture, mock_env: AzureCosmosServiceEnv):
+async def test_get_cosmos_client(
+    mocker: MockerFixture, mock_env: AzureCosmosServiceEnv
+):
     service = AzureCosmosService(env=mock_env, logger=MagicMock(Logger))
     mocker.patch(
         "azure_python.services.azure_cosmos_service.CosmosClient",
