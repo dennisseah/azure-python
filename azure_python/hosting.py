@@ -24,6 +24,7 @@ from azure_python.protocols.i_azure_openai_service import IAzureOpenAIService
 from azure_python.protocols.i_azure_resources_query_service import (
     IAzureResourcesQueryService,
 )
+from azure_python.protocols.i_azure_text2speech_service import IAzureText2SpeechService
 from azure_python.protocols.i_azure_text_analytics_service import (
     IAzureTextAnalyticsService,
 )
@@ -156,3 +157,12 @@ def azure_resources_query() -> IAzureResourcesQueryService:
     )
 
     return container[AzureResourcesQueryService]
+
+
+@dependency_definition(container, singleton=True)
+def azure_text2speech_service() -> IAzureText2SpeechService:
+    from azure_python.services.azure_text2speech_service import (
+        AzureText2SpeechService,
+    )
+
+    return container[AzureText2SpeechService]

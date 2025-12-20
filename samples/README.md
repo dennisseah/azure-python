@@ -350,7 +350,46 @@ python -m samples.azure_text_analytics_service
 
 ---
 
-### 11. Embedding Service ([embedding_service.py](embedding_service.py))
+### 11. Azure Text to Speech Service ([azure_text2speech_service.py](azure_text2speech_service.py))
+
+Converts text to speech audio using Azure Cognitive Services Speech.
+
+**What it does:**
+
+- Synthesizes speech from text input
+- Generates audio output in WAV format
+- Saves the audio file to disk
+
+**Key Features:**
+
+- Text-to-speech conversion
+- WAV audio file output
+- Synchronous operation
+- Simple API interface
+
+**Run:**
+
+```bash
+task sample-azure-text2speech-service
+# or
+python -m samples.azure_text2speech_service
+```
+
+**Use Cases:**
+
+- Voice-enabled applications
+- Accessibility features (screen readers, text narration)
+- Audio content generation
+- Interactive voice response (IVR) systems
+- E-learning and training materials
+- Podcast and audiobook creation
+
+**Output:** Generates a `test.wav` file in the current directory with the
+synthesized speech.
+
+---
+
+### 12. Embedding Service ([embedding_service.py](embedding_service.py))
 
 Demonstrates how to generate text embeddings using Azure OpenAI.
 

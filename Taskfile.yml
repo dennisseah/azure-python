@@ -54,6 +54,11 @@ tasks:
     cmds:
       - uv run python -m samples.azure_resources_query_service
 
+  sample-azure-text2speech-service:
+    desc: "Runs the Azure Text to Speech Service sample"
+    cmds:
+      - uv run python -m samples.azure_text2speech_service
+
   test-unit:
     desc: "Runs unit tests with pytest"
     cmds:
