@@ -113,6 +113,9 @@ azure-identity==1.24.0 \
 azure-mgmt-core==1.6.0 \
     --hash=sha256:0460d11e85c408b71c727ee1981f74432bc641bb25dfcf1bb4e90a49e776dbc4 \
     --hash=sha256:b26232af857b021e61d813d9f4ae530465255cb10b3dde945ad3743f7a58e79c
+azure-mgmt-resourcegraph==8.0.1 \
+    --hash=sha256:55a21d66da6b28a080d903eca192d02fc1cfd0775e139b30d44117ca4ba6ad1f \
+    --hash=sha256:de66eaa988c10999054ac77d31e44c112fbecfb829f56fd79bcff5649b4dd50b
 azure-monitor-opentelemetry==1.8.3 \
     --hash=sha256:4aa10f6712db653f618e14e3701de7a2f96669a8f2fea6fb22125077da4ea91c \
     --hash=sha256:647248328bb03f8044918411d57c661230277958559f067892bd79f98ce8f69c

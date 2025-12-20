@@ -16,6 +16,7 @@ from azure_python.protocols.i_adversarial_simulation_service import (
 )
 from azure_python.protocols.i_azure_blob_storage_service import IAzureBlobStorageService
 from azure_python.protocols.i_azure_cosmos_service import IAzureCosmosService
+from azure_python.protocols.i_azure_defender_service import IAzureDefenderService
 from azure_python.protocols.i_azure_managed_redis_service import (
     IAzureManagedRedisService,
 )
@@ -134,3 +135,12 @@ def azure_ai_textanalytics_service() -> IAzureTextAnalyticsService:
     )
 
     return container[AzureTextAnalyticsService]
+
+
+@dependency_definition(container, singleton=True)
+def azure_defender_service() -> IAzureDefenderService:
+    from azure_python.services.azure_defender_service import (
+        AzureDefenderService,
+    )
+
+    return container[AzureDefenderService]

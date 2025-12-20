@@ -100,7 +100,44 @@ python -m samples.azure_content_safety_service
 
 ---
 
-### 4. Azure Cosmos DB Service ([azure_cosmos_service.py](azure_cosmos_service.py))
+### 4. Azure Defender Service ([azure_defender_service.py](azure_defender_service.py))
+
+Retrieves compliance results from Azure Defender (Microsoft Defender for Cloud).
+
+**What it does:**
+
+- Connects to Azure Defender service
+- Retrieves compliance assessment results for a specified resource
+- Returns structured compliance data
+
+**Key Features:**
+
+- Security compliance monitoring
+- Resource-level compliance checks
+- Async operations
+- Dependency injection pattern
+
+**Run:**
+
+```bash
+task sample-azure-defender-service
+# or
+python -m samples.azure_defender_service
+```
+
+**Use Cases:**
+
+- Security posture assessment
+- Compliance monitoring and reporting
+- Resource security validation
+- Security standards compliance (CIS, PCI-DSS, etc.)
+
+**Note:** Replace `<resource_id>` with an actual Azure resource ID (e.g.,
+`/subscriptions/{subscription-id}/resourceGroups/{resource-group}/providers/{provider}/{resource-type}/{resource-name}`).
+
+---
+
+### 5. Azure Cosmos DB Service ([azure_cosmos_service.py](azure_cosmos_service.py))
 
 Demonstrates basic Azure Cosmos DB operations, specifically listing containers.
 
@@ -125,7 +162,7 @@ python -m samples.azure_cosmos_service
 
 ---
 
-### 5. Azure Foundry Adversarial Simulation ([azure_foundry_adv_sim.py](azure_foundry_adv_sim.py))
+### 6. Azure Foundry Adversarial Simulation ([azure_foundry_adv_sim.py](azure_foundry_adv_sim.py))
 
 Advanced sample showing how to perform adversarial simulation testing on AI
 endpoints.
@@ -165,7 +202,7 @@ python -m samples.azure_foundry_adv_sim
 
 ---
 
-### 6. Azure Managed Redis Service ([azure_managed_redis_service.py](azure_managed_redis_service.py))
+### 7. Azure Managed Redis Service ([azure_managed_redis_service.py](azure_managed_redis_service.py))
 
 Demonstrates basic Redis operations using Azure Managed Redis.
 
@@ -197,7 +234,7 @@ python -m samples.azure_managed_redis_service
 
 ---
 
-### 7. Azure MLflow Service ([azure_mlflow_service.py](azure_mlflow_service.py))
+### 8. Azure MLflow Service ([azure_mlflow_service.py](azure_mlflow_service.py))
 
 Shows how to use MLflow for experiment tracking and logging.
 
@@ -234,7 +271,7 @@ successfully.
 
 ---
 
-### 8. Azure Text Analytics Service ([azure_text_analytics_service.py](azure_text_analytics_service.py))
+### 9. Azure Text Analytics Service ([azure_text_analytics_service.py](azure_text_analytics_service.py))
 
 Shows how to use Azure Text Analytics for entity recognition in text.
 
@@ -274,7 +311,7 @@ python -m samples.azure_text_analytics_service
 
 ---
 
-### 9. Embedding Service ([embedding_service.py](embedding_service.py))
+### 10. Embedding Service ([embedding_service.py](embedding_service.py))
 
 Demonstrates how to generate text embeddings using Azure OpenAI.
 
