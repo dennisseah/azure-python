@@ -1,6 +1,8 @@
 # Python Guides
 
 - [Example for using Azure Python SDK](./Guidelines.md)
+- [Sample Code Documentation](./samples/README.md) - Comprehensive examples for
+  all Azure services
 
 ## setup sample project
 

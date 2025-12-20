@@ -49,6 +49,11 @@ tasks:
     cmds:
       - uv run python -m samples.azure_defender_service
 
+  sample-azure-resources-query-service:
+    desc: "Runs the Azure Resources Query sample"
+    cmds:
+      - uv run python -m samples.azure_resources_query_service
+
   test-unit:
     desc: "Runs unit tests with pytest"
     cmds:

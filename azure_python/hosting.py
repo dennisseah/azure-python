@@ -21,6 +21,9 @@ from azure_python.protocols.i_azure_managed_redis_service import (
     IAzureManagedRedisService,
 )
 from azure_python.protocols.i_azure_openai_service import IAzureOpenAIService
+from azure_python.protocols.i_azure_resources_query_service import (
+    IAzureResourcesQueryService,
+)
 from azure_python.protocols.i_azure_text_analytics_service import (
     IAzureTextAnalyticsService,
 )
@@ -144,3 +147,12 @@ def azure_defender_service() -> IAzureDefenderService:
     )
 
     return container[AzureDefenderService]
+
+
+@dependency_definition(container, singleton=True)
+def azure_resources_query() -> IAzureResourcesQueryService:
+    from azure_python.services.azure_resources_query_service import (
+        AzureResourcesQueryService,
+    )
+
+    return container[AzureResourcesQueryService]
