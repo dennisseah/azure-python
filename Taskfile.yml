@@ -29,6 +29,11 @@ tasks:
     cmds:
       - uv run python -m samples.azure_foundry_adv_sim
 
+  sample-adversarial-simulation-service:
+    desc: "Runs the Adversarial Simulation Service sample"
+    cmds:
+      - uv run python -m samples.adversarial_simulation_service
+
   sample-embedding-service:
     desc: "Runs the Embedding Service sample"
     cmds:
