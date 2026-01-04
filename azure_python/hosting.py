@@ -17,6 +17,7 @@ from azure_python.protocols.i_adversarial_simulation_service import (
 from azure_python.protocols.i_azure_blob_storage_service import IAzureBlobStorageService
 from azure_python.protocols.i_azure_cosmos_service import IAzureCosmosService
 from azure_python.protocols.i_azure_defender_service import IAzureDefenderService
+from azure_python.protocols.i_azure_keyvault_service import IAzureKeyVaultService
 from azure_python.protocols.i_azure_managed_redis_service import (
     IAzureManagedRedisService,
 )
@@ -166,3 +167,12 @@ def azure_text2speech_service() -> IAzureText2SpeechService:
     )
 
     return container[AzureText2SpeechService]
+
+
+@dependency_definition(container, singleton=True)
+def azure_keyvault_service() -> IAzureKeyVaultService:
+    from azure_python.services.azure_keyvault_service import (
+        AzureKeyVaultService,
+    )
+
+    return container[AzureKeyVaultService]

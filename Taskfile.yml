@@ -19,6 +19,11 @@ tasks:
     cmds:
       - uv run python -m samples.azure_content_safety_service
 
+  sample-azure-keyvault-service:
+    desc: "Runs the Azure Key Vault Service sample"
+    cmds:
+      - uv run python -m samples.azure_keyvault_service
+
   sample-azure-mlflow-service:
     desc: "Runs the Azure MLFlow Service sample"
     cmds:

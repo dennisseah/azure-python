@@ -420,6 +420,25 @@ python -m samples.embedding_service
 - RAG (Retrieval-Augmented Generation) applications
 - Recommendation systems
 
+### 13. Azure Key Vault Service ([azure_keyvault_service.py](azure_keyvault_service.py))
+
+Demonstrates how to interact with Azure Key Vault to get and set secrets. **What
+it does:**
+
+- Retrieves a secret from Azure Key Vault
+- Sets a secret in Azure Key Vault **Key Features:**
+- Async secret retrieval and storage
+- Dependency injection pattern
+- Uses DefaultAzureCredential for authentication
+- Simple API interface
+- Run:
+
+```bash
+task sample-azure-keyvault-service
+# or
+python -m samples.azure_keyvault_service
+```
+
 ---
 
 ## Utility Files

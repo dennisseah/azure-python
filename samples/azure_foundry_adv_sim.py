@@ -21,7 +21,7 @@ class Endpoint:
                     {"role": "user", "content": query},
                 ],
             )
-            return result.content
+            return result[0].content
         except Exception:
             return None
 
