@@ -123,6 +123,9 @@ azure-core-tracing-opentelemetry==1.0.0b12 \
 azure-cosmos==4.14.3 \
     --hash=sha256:67b20403520ecfddb23067caf3d4161a466823e36e63ef666f6bc2c079b03a88 \
     --hash=sha256:ae84aa0438dfcf8b8d6dec22dc7ce5219645321f37cddb50a13c84b69675f0bc
+azure-data-tables==12.7.0 \
+    --hash=sha256:24ed9b5690aa46c213182e32bb1b39a68dd9f526d84f447c287e3a401b437c10 \
+    --hash=sha256:b14fc94a3223a2835ff5688e17d8e107b27c7cd7c4114138f2ac81373723705d
 azure-identity==1.24.0 \
     --hash=sha256:6c3a40b2a70af831e920b89e6421e8dcd4af78a0cb38b9642d86c67643d4930c \
     --hash=sha256:9e04997cde0ab02ed66422c74748548e620b7b29361c72ce622acab0267ff7c4

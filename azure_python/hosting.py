@@ -25,6 +25,9 @@ from azure_python.protocols.i_azure_openai_service import IAzureOpenAIService
 from azure_python.protocols.i_azure_resources_query_service import (
     IAzureResourcesQueryService,
 )
+from azure_python.protocols.i_azure_table_storage_service import (
+    IAzureTableStorageService,
+)
 from azure_python.protocols.i_azure_text2speech_service import IAzureText2SpeechService
 from azure_python.protocols.i_azure_text_analytics_service import (
     IAzureTextAnalyticsService,
@@ -58,6 +61,15 @@ def azure_blob_storage_service() -> IAzureBlobStorageService:
     )
 
     return container[AzureBlobStorageService]
+
+
+@dependency_definition(container, singleton=True)
+def azure_table_storage_service() -> IAzureTableStorageService:
+    from azure_python.services.azure_table_storage_service import (
+        AzureTableStorageService,
+    )
+
+    return container[AzureTableStorageService]
 
 
 @dependency_definition(container, singleton=True)

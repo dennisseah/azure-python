@@ -32,6 +32,7 @@ dependencies = [
     "agent-framework>=1.0.0b251120",
     "marshmallow>=3.26.2",
     "azure-keyvault-secrets>=4.10.0",
+    "azure-data-tables>=12.7.0",
 ]
 
 [dependency-groups]

@@ -20,9 +20,7 @@ def mock_env() -> AzureKeyVaultServiceEnv:
 
 
 @pytest.mark.asyncio
-async def test_get_cosmos_client(
-    mocker: MockerFixture, mock_env: AzureKeyVaultServiceEnv
-):
+async def test_get_client(mocker: MockerFixture, mock_env: AzureKeyVaultServiceEnv):
     service = AzureKeyVaultService(env=mock_env)
     mocker.patch(
         "azure_python.services.azure_cosmos_service.CosmosClient",
