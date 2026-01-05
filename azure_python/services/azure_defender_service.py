@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from logging import Logger
 from typing import Any
 
 import aiohttp
@@ -12,6 +13,8 @@ URL_COMPLIANCE_RESULTS = "https://management.azure.com/{0}/providers/Microsoft.S
 
 @dataclass
 class AzureDefenderService(IAzureDefenderService):
+    logger: Logger
+
     def __post_init__(self):
         tokenCredential = DefaultAzureCredential()
         self.accessToken = tokenCredential.get_token(
@@ -19,6 +22,7 @@ class AzureDefenderService(IAzureDefenderService):
         ).token
 
     async def get_compliance_results(self, resource_id: str) -> list[ComplianceResult]:
+        self.logger.debug("[BEGIN] get_compliance_results")
         url = URL_COMPLIANCE_RESULTS.format(resource_id)
 
         async with aiohttp.ClientSession() as client:
@@ -29,8 +33,12 @@ class AzureDefenderService(IAzureDefenderService):
             async with client.get(url, headers=headers) as resp:
                 assert resp.status == 200
                 results: Any = await resp.json()
-                return (
+                results = (
                     [ComplianceResult(**val) for val in results["value"]]
                     if "value" in results
                     else []
                 )
+                self.logger.debug(
+                    f"[COMPLETED] get_compliance_results, count: {len(results)}"
+                )
+                return results

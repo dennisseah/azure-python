@@ -1,3 +1,5 @@
+from unittest.mock import MagicMock
+
 import pytest
 from pytest_mock import MockerFixture
 
@@ -21,7 +23,7 @@ def test_get_client(api_key, mocker: MockerFixture) -> None:
         azure_openai_api_version="2025-04-01-preview",
         azure_openai_api_key=api_key,
     )
-    service = AzureOpenAIChatClientService(env=env)
+    service = AzureOpenAIChatClientService(env=env, logger=MagicMock())
     client = service.get_client()
 
     assert client is not None

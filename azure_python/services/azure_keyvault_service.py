@@ -1,5 +1,6 @@
 from contextlib import asynccontextmanager
 from dataclasses import dataclass
+from logging import Logger
 from typing import AsyncIterator
 
 from azure.identity.aio import DefaultAzureCredential
@@ -16,6 +17,7 @@ class AzureKeyVaultServiceEnv(Env):
 @dataclass
 class AzureKeyVaultService(IAzureKeyVaultService):
     env: AzureKeyVaultServiceEnv
+    logger: Logger
 
     @asynccontextmanager
     async def get_client(self) -> AsyncIterator[SecretClient]:
@@ -29,11 +31,15 @@ class AzureKeyVaultService(IAzureKeyVaultService):
             await cred.close()
 
     async def get_secret(self, secret_name: str) -> str | None:
+        self.logger.debug(f"[BEGIN] get_secret: {secret_name}")
         async with self.get_client() as client:
             secret = await client.get_secret(secret_name)
+            self.logger.debug(f"[COMPLETED] get_secret: {secret_name}")
             return secret.value
 
     async def set_secret(self, secret_name: str, secret_value: str) -> bool:
+        self.logger.debug(f"[BEGIN] set_secret: {secret_name}")
         async with self.get_client() as client:
             await client.set_secret(secret_name, secret_value)
+            self.logger.debug(f"[COMPLETED] set_secret: {secret_name}")
             return True

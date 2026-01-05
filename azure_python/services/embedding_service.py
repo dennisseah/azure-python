@@ -1,5 +1,6 @@
 from contextlib import asynccontextmanager
 from dataclasses import dataclass
+from logging import Logger
 from typing import AsyncIterator
 
 from azure.ai.inference.aio import EmbeddingsClient
@@ -18,6 +19,7 @@ class EmbeddingServiceEnv(Env):
 @dataclass
 class EmbeddingService:
     env: EmbeddingServiceEnv
+    logger: Logger
 
     @asynccontextmanager
     async def get_client(self) -> AsyncIterator[EmbeddingsClient]:
@@ -43,5 +45,8 @@ class EmbeddingService:
                 await cred.close()
 
     async def get_embeddings(self, text: list[str]) -> EmbeddingsResult:
+        self.logger.debug("[BEGIN] get_embeddings")
         async with self.get_client() as client:
-            return await client.embed(input=text)
+            result = await client.embed(input=text)
+            self.logger.debug("[COMPLETED] get_embeddings")
+            return result

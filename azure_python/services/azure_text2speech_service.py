@@ -29,6 +29,9 @@ class AzureText2SpeechService(IAzureText2SpeechService):
     def synthesize(
         self, text: str, output_file: str, voice: voices = "en-US-MonicaNeural"
     ) -> bool:
+        self.logger.debug(
+            f"[BEGIN] synthesize text to {output_file} using voice {voice}"
+        )
         speech_config = speech.SpeechConfig(
             subscription=self.env.azure_speech_key, region=self.env.azure_speech_region
         )
@@ -44,8 +47,10 @@ class AzureText2SpeechService(IAzureText2SpeechService):
         if result.reason == speech.ResultReason.SynthesizingAudioCompleted:
             with open(output_file, "wb") as audio_file:
                 audio_file.write(result.audio_data)
-            self.logger.info(f"Speech synthesized and saved to {output_file}")
+            self.logger.debug(
+                f"[COMPLETED] Speech synthesized and saved to {output_file}"
+            )
             return True
 
-        self.logger.info(f"Speech synthesis failed: {result.reason}")
+        self.logger.error(f"[ERROR] Speech synthesis failed: {result.reason}")
         return False

@@ -21,7 +21,7 @@ def mock_env() -> AzureKeyVaultServiceEnv:
 
 @pytest.mark.asyncio
 async def test_get_client(mocker: MockerFixture, mock_env: AzureKeyVaultServiceEnv):
-    service = AzureKeyVaultService(env=mock_env)
+    service = AzureKeyVaultService(env=mock_env, logger=MagicMock())
     mocker.patch(
         "azure_python.services.azure_cosmos_service.CosmosClient",
         return_value=AsyncMock(),
@@ -49,7 +49,7 @@ async def test_get_secret(
     mocker: MockerFixture,
     mock_client: MagicMock,
 ) -> None:
-    service = AzureKeyVaultService(env=mock_env)
+    service = AzureKeyVaultService(env=mock_env, logger=MagicMock())
     mocker.patch.object(AzureKeyVaultService, "get_client", return_value=mock_client)
     secret = await service.get_secret("test_secret")
 
@@ -62,7 +62,7 @@ async def test_set_secret(
     mocker: MockerFixture,
     mock_client: MagicMock,
 ) -> None:
-    service = AzureKeyVaultService(env=mock_env)
+    service = AzureKeyVaultService(env=mock_env, logger=MagicMock())
     mocker.patch.object(AzureKeyVaultService, "get_client", return_value=mock_client)
     status = await service.set_secret("test_secret", "mock_secret_value")
     assert status is True

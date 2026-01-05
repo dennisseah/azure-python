@@ -35,7 +35,7 @@ async def test_get_compliance_results(mocker: MockerFixture):
     resp = MockResponse()
     mocker.patch("aiohttp.ClientSession.get", return_value=resp)
 
-    service = AzureDefenderService()
+    service = AzureDefenderService(logger=MagicMock())
     result = await service.get_compliance_results("test")
 
     assert service is not None

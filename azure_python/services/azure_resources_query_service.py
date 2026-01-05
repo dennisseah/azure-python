@@ -64,6 +64,8 @@ class AzureResourcesQueryService(IAzureResourcesQueryService):
         action_type: Literal["Create", "Update", "Delete", "Compliance"],
         timestamp: str,
     ) -> list[OriginalResourceActivity]:
+        self.logger.debug(f"[BEGIN] query_activities for action_type: {action_type}")
+
         data = await self.query_raw(query)
 
         def create(r: dict[str, Any]) -> OriginalResourceActivity | None:
@@ -85,6 +87,10 @@ class AzureResourcesQueryService(IAzureResourcesQueryService):
             return None
 
         created = [create(r) for r in data]
+
+        self.logger.debug(
+            f"[COMPLETED] query_activities for action_type: {action_type}, count: {len(created)}"  # noqa E501
+        )
         return [c for c in created if c]
 
     async def query(self, query: str) -> list[OriginalResource]:
@@ -92,7 +98,8 @@ class AzureResourcesQueryService(IAzureResourcesQueryService):
         return [OriginalResource(**r) for r in data]
 
     async def fetch_subscriptions(self, tenant_id: str) -> list[OriginalResource]:
-        return await self.query(
+        self.logger.debug(f"[BEGIN] fetch_subscriptions for tenant_id: {tenant_id}")
+        result = await self.query(
             f"""resourcecontainers
             |
             where type =~ 'microsoft.resources/subscriptions' and
@@ -100,11 +107,20 @@ class AzureResourcesQueryService(IAzureResourcesQueryService):
             | sort by name
             """
         )
+        self.logger.debug(
+            f"[COMPLETED] fetch_subscriptions for tenant_id: {tenant_id}, count: {
+                len(result)
+            }"
+        )
+        return result
 
     async def fetch_resource_groups(
         self, subscription_id: str
     ) -> list[OriginalResource]:
-        return await self.query(
+        self.logger.debug(
+            f"[BEGIN] fetch_resource_groups for subscription_id: {subscription_id}"
+        )
+        result = await self.query(
             f"""resourcecontainers
             |
             where type =~ 'microsoft.resources/subscriptions/resourcegroups'
@@ -112,17 +128,26 @@ class AzureResourcesQueryService(IAzureResourcesQueryService):
             | sort by name
             """
         )
+        self.logger.debug(
+            f"[COMPLETED] fetch_resource_groups for subscription_id: {subscription_id}, "  # noqa E501
+            f"count: {len(result)}"
+        )
+        return result
 
     async def fetch_resources(
         self, subscription_id: str, resource_group_name: str | None = None
     ) -> list[OriginalResource]:
+        self.logger.debug(
+            f"[BEGIN] fetch_resources for subscription_id: {subscription_id}, "
+            f"resource_group_name: {resource_group_name}"
+        )
         where_clause = (
             f"resourceGroup =~ '{resource_group_name}' and"
             if resource_group_name
             else "isnotempty(resourceGroup) and"
         )
 
-        return await self.query(
+        results = await self.query(
             f"""
             resources |
                 where subscriptionId =~ '{subscription_id}' and
@@ -132,16 +157,26 @@ class AzureResourcesQueryService(IAzureResourcesQueryService):
             """
         )
 
+        self.logger.debug(
+            f"[COMPLETED] fetch_resources for subscription_id: {subscription_id}, "
+            f"resource_group_name: {resource_group_name}, count: {len(results)}"
+        )
+        return results
+
     async def fetch_creations(
         self, subscription_id: str, resource_group_name: str | None = None
     ) -> list[OriginalResourceActivity]:
+        self.logger.debug(
+            f"[BEGIN] fetch_creations for subscription_id: {subscription_id}, "
+            f"resource_group_name: {resource_group_name}"
+        )
         where_clause = (
             f"resourceGroup =~ '{resource_group_name}' and"
             if resource_group_name
             else "isnotempty(resourceGroup) and"
         )
 
-        return await self.query_activities(
+        result = await self.query_activities(
             f"""
             resourcechanges |
                 where subscriptionId =~ '{subscription_id}' and
@@ -151,11 +186,19 @@ class AzureResourcesQueryService(IAzureResourcesQueryService):
             "Create",
             "properties/changeAttributes/timestamp",
         )
+        self.logger.debug(
+            f"[COMPLETED] fetch_creations for subscription_id: {subscription_id}, "
+            f"resource_group_name: {resource_group_name}, count: {len(result)}"
+        )
+        return result
 
     async def fetch_deletions(
         self, subscription_id: str
     ) -> list[OriginalResourceActivity]:
-        return await self.query_activities(
+        self.logger.debug(
+            f"[BEGIN] fetch_deletions for subscription_id: {subscription_id}"
+        )
+        result = await self.query_activities(
             f"""
             resourcechanges |
                 where subscriptionId =~ '{subscription_id}' and
@@ -164,17 +207,26 @@ class AzureResourcesQueryService(IAzureResourcesQueryService):
             "Delete",
             "properties/changeAttributes/timestamp",
         )
+        self.logger.debug(
+            f"[COMPLETED] fetch_deletions for subscription_id: {subscription_id}, "
+            f"count: {len(result)}"
+        )
+        return result
 
     async def fetch_changes(
         self, subscription_id: str, resource_group_name: str | None = None
     ) -> list[OriginalResourceActivity]:
+        self.logger.debug(
+            f"[BEGIN] fetch_changes for subscription_id: {subscription_id}, "
+            f"resource_group_name: {resource_group_name}"
+        )
         where_clause = (
             f"resourceGroup =~ '{resource_group_name}' and"
             if resource_group_name
             else "isnotempty(resourceGroup) and"
         )
 
-        return await self.query_activities(
+        result = await self.query_activities(
             f"""
             resourcechanges |
                 where subscriptionId =~ '{subscription_id}' and
@@ -184,17 +236,26 @@ class AzureResourcesQueryService(IAzureResourcesQueryService):
             "Update",
             "properties/changeAttributes/timestamp",
         )
+        self.logger.debug(
+            f"[COMPLETED] fetch_changes for subscription_id: {subscription_id}, "
+            f"resource_group_name: {resource_group_name}, count: {len(result)}"
+        )
+        return result
 
     async def fetch_azure_policies(
         self, subscription_id: str, resource_group_name: str | None = None
     ) -> list[OriginalResourceActivity]:
+        self.logger.debug(
+            f"[BEGIN] fetch_azure_policies for subscription_id: {subscription_id}, "
+            f"resource_group_name: {resource_group_name}"
+        )
         where_clause = (
             f"and resourceGroup =~ '{resource_group_name}'"
             if resource_group_name
             else "and isnotempty(resourceGroup)"
         )
 
-        return await self.query_activities(
+        result = await self.query_activities(
             f"""
             policyresources |
                 where subscriptionId =~ '{subscription_id}' {where_clause}
@@ -202,10 +263,19 @@ class AzureResourcesQueryService(IAzureResourcesQueryService):
             "Compliance",
             "properties/timestamp",
         )
+        self.logger.debug(
+            f"[COMPLETED] fetch_azure_policies for subscription_id: {subscription_id}, "
+            f"resource_group_name: {resource_group_name}, count: {len(result)}"
+        )
+        return result
 
     async def fetch_azure_patch_assessments(
         self, subscription_id: str, resource_group_name: str | None = None
     ) -> list[OriginalResourceActivity]:
+        self.logger.debug(
+            f"[BEGIN] fetch_azure_patch_assessments for subscription_id: {subscription_id}, "  # noqa E501
+            f"resource_group_name: {resource_group_name}"
+        )
         where_clause = (
             f"and resourceGroup =~ '{resource_group_name}'"
             if resource_group_name
@@ -231,4 +301,8 @@ class AzureResourcesQueryService(IAzureResourcesQueryService):
                 timestamp=self.get_timestamp(r, "properties/lastModifiedDateTime"),
             )
 
+        self.logger.debug(
+            f"[COMPLETED] fetch_azure_patch_assessments for subscription_id: {subscription_id}, "  # noqa E501
+            f"resource_group_name: {resource_group_name}, count: {len(data)}"
+        )
         return [create(r) for r in data]

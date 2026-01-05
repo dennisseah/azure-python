@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from logging import Logger
 from typing import Any
 
 from lagom.environment import Env
@@ -20,6 +21,7 @@ class AzureManagedRedisServiceEnv(Env):
 @dataclass
 class AzureManagedRedisService(IAzureManagedRedisService):
     env: AzureManagedRedisServiceEnv
+    logger: Logger
 
     def __post_init__(self) -> None:
         self.client = self.get_client()
@@ -40,10 +42,16 @@ class AzureManagedRedisService(IAzureManagedRedisService):
         )
 
     async def ping(self) -> bool:
+        self.logger.debug("ping...")
         return await self.client.ping()  # type: ignore
 
     async def set(self, key: str, value: Any) -> None:
+        self.logger.debug(f"[BEGIN] set key: {key}")
         await self.client.set(name=key, value=value)
+        self.logger.debug(f"[COMPLETED] set key: {key}")
 
     async def get(self, key: str) -> Any:
-        return await self.client.get(name=key)
+        self.logger.debug(f"[BEGIN] get key: {key}")
+        data = await self.client.get(name=key)
+        self.logger.debug(f"[COMPLETED] get key: {key}")
+        return data

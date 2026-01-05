@@ -1,7 +1,7 @@
 import asyncio
 
+from azure_python.common.log_utils import set_log_level
 from azure_python.hosting import container
-from samples.utils import set_log_level
 
 
 async def main() -> None:
@@ -18,5 +18,5 @@ async def main() -> None:
 
 
 if __name__ == "__main__":
-    set_log_level("INFO")
+    set_log_level("DEBUG")
     asyncio.run(main())

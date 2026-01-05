@@ -25,7 +25,9 @@ async def test_content_safety_check_input():
     )
 
     with pytest.raises(ContentSafeException):
-        OpenAIContentEvaluator().content_safety_check(response=test_data)
+        OpenAIContentEvaluator(logger=MagicMock()).content_safety_check(
+            response=test_data
+        )
 
 
 @pytest.mark.asyncio
@@ -45,7 +47,9 @@ async def test_content_safety_check_input_filtered():
     )
 
     with pytest.raises(ContentSafeException):
-        OpenAIContentEvaluator().content_safety_check(response=test_data)
+        OpenAIContentEvaluator(logger=MagicMock()).content_safety_check(
+            response=test_data
+        )
 
 
 @pytest.mark.asyncio
@@ -73,4 +77,17 @@ async def test_content_safety_check_output():
     )
 
     with pytest.raises(ContentSafeException):
-        OpenAIContentEvaluator().content_safety_check(response=test_data)
+        OpenAIContentEvaluator(logger=MagicMock()).content_safety_check(
+            response=test_data
+        )
+
+
+@pytest.mark.asyncio
+async def test_content_safety_check_input_empty():
+    test_data = MagicMock(
+        choices=[MagicMock(message=MagicMock(content=""), finish_reason="stop")],
+        usage=None,
+        prompt_filter_results=[],
+    )
+
+    OpenAIContentEvaluator(logger=MagicMock()).content_safety_check(response=test_data)

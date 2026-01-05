@@ -11,6 +11,7 @@ import os
 from dotenv import load_dotenv
 from lagom import Container, dependency_definition
 
+from azure_python.common.log_utils import set_log_level
 from azure_python.protocols.i_adversarial_simulation_service import (
     IAdversarialSimulationService,
 )
@@ -49,9 +50,10 @@ container = Container()
 
 @dependency_definition(container, singleton=True)
 def logger() -> logging.Logger:
-    logging.basicConfig(level=os.getenv("LOG_LEVEL", "ERROR"))
-    logging.Formatter(fmt=" %(name)s :: %(levelname)-8s :: %(message)s")
-    return logging.getLogger("azure_python")
+    log_level = os.getenv("LOG_LEVEL", "ERROR")
+    if log_level not in ["ERROR", "WARNING", "INFO", "DEBUG"]:
+        log_level = "ERROR"
+    return set_log_level(log_level)  # type: ignore
 
 
 @dependency_definition(container, singleton=True)

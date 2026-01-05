@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from logging import Logger
 from typing import Any
 
 from agent_framework.azure import AzureOpenAIChatClient
@@ -20,8 +21,10 @@ class AzureOpenAIChatClientServiceEnv(Env):
 @dataclass
 class AzureOpenAIChatClientService(IAzureOpenAIChatClientService):
     env: AzureOpenAIChatClientServiceEnv
+    logger: Logger
 
     def get_client(self) -> AzureOpenAIChatClient:
+        self.logger.debug("[BEGIN] get_client for AzureOpenAIChatClient")
         params: dict[str, Any] = {
             "endpoint": self.env.azure_openai_endpoint,
             "deployment_name": self.env.azure_openai_chat_deployment_name,
@@ -33,4 +36,5 @@ class AzureOpenAIChatClientService(IAzureOpenAIChatClientService):
         else:
             params["credential"] = DefaultAzureCredential()
 
+        self.logger.debug("[COMPLETED] get_client for AzureOpenAIChatClient")
         return AzureOpenAIChatClient(**params)

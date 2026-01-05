@@ -1,3 +1,5 @@
+from dataclasses import dataclass
+from logging import Logger
 from typing import Any, Literal
 
 from openai.types.chat import (
@@ -10,7 +12,10 @@ from azure_python.protocols.i_openai_content_evaluator import (
 )
 
 
+@dataclass
 class OpenAIContentEvaluator(IOpenAIContentEvaluator):
+    logger: Logger
+
     def evaluate_severity(
         self, dict_filters: dict[str, str], theshold: Literal["low", "medium", "high"]
     ) -> None:
@@ -44,6 +49,7 @@ class OpenAIContentEvaluator(IOpenAIContentEvaluator):
         response: ChatCompletion,
         threshold: Literal["low", "medium", "high"] = "high",
     ) -> None:
+        self.logger.debug("[BEGIN] content_safety_check")
         if response.prompt_filter_results:  # type: ignore
             item: dict[str, Any] = response.prompt_filter_results[0]  # type: ignore
 
@@ -57,3 +63,4 @@ class OpenAIContentEvaluator(IOpenAIContentEvaluator):
                             choice.model_extra["content_filter_results"],  # type: ignore
                             threshold,
                         )  # type: ignore
+        self.logger.debug("[COMPLETED] content_safety_check")

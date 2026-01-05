@@ -28,7 +28,9 @@ def fn_mock_service(mocker: MockerFixture) -> Callable[[bool], AzureOpenAIServic
         env = MagicMock()
         if not with_api_key:
             env.azure_openai_api_key = None
-        svc = AzureOpenAIService(env=env, content_safety_eval=MagicMock())
+        svc = AzureOpenAIService(
+            env=env, content_safety_eval=MagicMock(), logger=MagicMock()
+        )
         patched_azure_openai.assert_called_once()
         return svc
 

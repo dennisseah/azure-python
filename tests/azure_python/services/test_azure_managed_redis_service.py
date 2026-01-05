@@ -19,6 +19,7 @@ def azure_managed_redis_service(mocker: MockerFixture) -> AzureManagedRedisServi
         env=AzureManagedRedisServiceEnv(
             redis_host="test.redis.cache.windows.net",
         ),
+        logger=MagicMock(),
     )
     svc.client = MagicMock(
         ping=AsyncMock(return_value=True),
@@ -35,7 +36,7 @@ def test_azure_managed_redis_service_get_client(
     mock_fn_auth = mocker.patch(
         "azure_python.services.azure_managed_redis_service.create_from_default_azure_credential"
     )
-    svc = AzureManagedRedisService(env=MagicMock())
+    svc = AzureManagedRedisService(env=MagicMock(), logger=MagicMock())
 
     mock_redis.assert_called_once()
     mock_fn_auth.assert_called_once()

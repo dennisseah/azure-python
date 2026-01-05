@@ -75,9 +75,11 @@ class ContentSafetyService(IContentSafetyService):
         return results
 
     async def analyze_text(self, text: str) -> list[dict]:
+        self.logger.debug("[BEGIN] analyze_text")
         request = AnalyzeTextOptions(text=text)
 
         async with self.get_client() as client:
             response = await client.analyze_text(request)
+            self.logger.debug("[COMPLETED] analyze_text")
 
         return self.collect_results(response)

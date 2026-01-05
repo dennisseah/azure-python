@@ -28,7 +28,7 @@ def mock_env() -> Callable:
 @pytest.mark.asyncio
 @pytest.mark.parametrize("with_key", [True, False])
 async def test_get_client(with_key, mocker: MockerFixture, mock_env: Callable):
-    service = EmbeddingService(env=mock_env(with_key))
+    service = EmbeddingService(env=mock_env(with_key), logger=MagicMock())
 
     mocker.patch(
         "azure_python.services.embedding_service.EmbeddingsClient",
@@ -56,7 +56,7 @@ async def mock_embedding_client() -> AsyncIterator[MockerFixture]:
 def embedding_service(
     mock_embedding_client: MagicMock, mocker: MockerFixture
 ) -> EmbeddingService:
-    service = EmbeddingService(env=MagicMock())
+    service = EmbeddingService(env=MagicMock(), logger=MagicMock())
     mocker.patch.object(
         EmbeddingService, "get_client", return_value=mock_embedding_client
     )

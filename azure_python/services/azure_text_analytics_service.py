@@ -73,6 +73,7 @@ class AzureTextAnalyticsService(IAzureTextAnalyticsService):
         return RecognizedEntities(id=result.id, entities=entities)
 
     async def recognize_entities(self, content: list[str]) -> list[RecognizedEntities]:
+        self.logger.debug("[BEGIN] recognize_entities")
         if len(content) == 0:
             return []
 
@@ -81,6 +82,7 @@ class AzureTextAnalyticsService(IAzureTextAnalyticsService):
 
         async with client:
             results = await client.recognize_entities(content)
+            self.logger.debug("[COMPLETED] recognize_entities")
             return [
                 self.mapToRecognizedEntity(result, statements)
                 for result in results

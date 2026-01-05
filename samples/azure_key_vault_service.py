@@ -1,10 +1,10 @@
 import asyncio
 
+from azure_python.common.log_utils import set_log_level
 from azure_python.hosting import container
 from azure_python.protocols.i_azure_keyvault_service import (
     IAzureKeyVaultService,
 )
-from samples.utils import set_log_level
 
 
 async def main() -> None:

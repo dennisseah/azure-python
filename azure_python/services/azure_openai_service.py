@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from logging import Logger
 from typing import Any, Callable
 
 from azure.identity import DefaultAzureCredential, get_bearer_token_provider
@@ -31,6 +32,7 @@ class AzureOpenAIService(IAzureOpenAIService):
 
     env: AzureOpenAIServiceEnv
     content_safety_eval: IOpenAIContentEvaluator
+    logger: Logger
 
     def __post_init__(self) -> None:
         self.client = self.get_client()
@@ -83,6 +85,8 @@ class AzureOpenAIService(IAzureOpenAIService):
         temperature: float = 1.0,
         num_generations: int = 1,
     ) -> list[LLMResponse]:
+        self.logger.debug("[BEGIN] chat_completion")
+
         self.client = self.get_client()
         response = await self.client.chat.completions.create(
             model=self.env.azure_openai_deployed_model_name,
@@ -91,6 +95,7 @@ class AzureOpenAIService(IAzureOpenAIService):
             n=num_generations,
         )
 
+        self.logger.debug("[COMPLETED] chat_completion")
         return self.collection_results(response, num_generations)
 
     async def chat_completion_with_format(
@@ -100,6 +105,8 @@ class AzureOpenAIService(IAzureOpenAIService):
         temperature: float = 1.0,
         num_generations: int = 1,
     ) -> list[LLMResponse]:
+        self.logger.debug("[BEGIN] chat_completion_with_format")
+
         self.client = self.get_client()
         responses = await self.client.chat.completions.parse(
             model=self.env.azure_openai_deployed_model_name,
@@ -109,4 +116,5 @@ class AzureOpenAIService(IAzureOpenAIService):
             n=num_generations,
         )
 
+        self.logger.debug("[COMPLETED] chat_completion_with_format")
         return self.collection_results(responses, num_generations)
