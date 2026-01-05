@@ -48,18 +48,3 @@ jobs:
       run: |
         python -m pytest --doctest-modules --junitxml=junit/test-results.xml --cov=azure_python --cov-report=xml tests
 
-    - name: Publish test results
-      uses: dorny/test-reporter@v1
-      if: always()
-      with:
-        name: Test Results (Python ${{ matrix.python-version }})
-        path: junit/test-*.xml
-        reporter: java-junit
-
-    - name: Upload coverage reports to Codecov
-      uses: codecov/codecov-action@v3
-      with:
-        file: ./coverage.xml
-        flags: unittests
-        name: codecov-umbrella
-        fail_ci_if_error: false
