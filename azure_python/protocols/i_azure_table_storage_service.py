@@ -71,3 +71,28 @@ class IAzureTableStorageService(Protocol):
         :return: List of entities
         """
         ...
+
+    async def update_entity(self, table_name: str, entity: dict) -> None:
+        """Update an entity in a table
+
+        :param table_name: The name of the table
+        :param entity: The entity to update
+        """
+        ...
+
+    async def upsert_entity(self, table_name: str, entity: dict) -> None:
+        """Upsert an entity in a table
+
+        :param table_name: The name of the table
+        :param entity: The entity to upsert
+        """
+        ...
+
+    async def query_entities(self, table_name: str, filter_query: str) -> list[dict]:
+        """Query entities in a table
+
+        :param table_name: The name of the table
+        :param filter_query: The filter query string
+        :return: List of entities matching the query
+        """
+        ...

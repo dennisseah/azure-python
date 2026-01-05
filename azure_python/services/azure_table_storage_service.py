@@ -117,3 +117,24 @@ class AzureTableStorageService(IAzureTableStorageService):
                 results.append(entity)
 
             return results
+
+    async def update_entity(self, table_name: str, entity: dict) -> None:
+        async with self.get_client() as client:
+            table_client = client.get_table_client(table_name)
+            await table_client.update_entity(entity=entity)
+
+    async def upsert_entity(self, table_name: str, entity: dict) -> None:
+        async with self.get_client() as client:
+            table_client = client.get_table_client(table_name)
+            await table_client.upsert_entity(entity=entity)
+
+    async def query_entities(self, table_name: str, filter_query: str) -> list[dict]:
+        async with self.get_client() as client:
+            table_client = client.get_table_client(table_name)
+            entities = table_client.query_entities(query_filter=filter_query)
+            results: list[dict] = []
+
+            async for entity in entities:
+                results.append(entity)
+
+            return results

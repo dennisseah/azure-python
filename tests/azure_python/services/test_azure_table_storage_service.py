@@ -280,3 +280,78 @@ async def test_list_entities(
     entities = await service.list_entities("TestTable")
 
     assert entities == mock_entities
+
+
+@pytest.mark.asyncio
+async def test_update_entity(
+    service: AzureTableStorageService, mocker: MockerFixture
+) -> None:
+    mock_table_client = AsyncMock()
+    mock_table_client.update_entity = AsyncMock()
+
+    mock_client = MagicMock()
+    mock_client.get_table_client = MagicMock(return_value=mock_table_client)
+
+    @asynccontextmanager
+    async def mock_get_client():
+        yield mock_client
+
+    mocker.patch.object(service, "get_client", side_effect=mock_get_client)
+
+    entity = {"PartitionKey": "part1", "RowKey": "row1", "Value": "updated"}
+    await service.update_entity("TestTable", entity)
+
+    mock_table_client.update_entity.assert_awaited_once_with(entity=entity)
+
+
+@pytest.mark.asyncio
+async def test_upsert_entity(
+    service: AzureTableStorageService, mocker: MockerFixture
+) -> None:
+    mock_table_client = AsyncMock()
+    mock_table_client.upsert_entity = AsyncMock()
+
+    mock_client = MagicMock()
+    mock_client.get_table_client = MagicMock(return_value=mock_table_client)
+
+    @asynccontextmanager
+    async def mock_get_client():
+        yield mock_client
+
+    mocker.patch.object(service, "get_client", side_effect=mock_get_client)
+
+    entity = {"PartitionKey": "part1", "RowKey": "row1", "Value": "upserted"}
+    await service.upsert_entity("TestTable", entity)
+
+    mock_table_client.upsert_entity.assert_awaited_once_with(entity=entity)
+
+
+@pytest.mark.asyncio
+async def test_query_entities(
+    service: AzureTableStorageService, mocker: MockerFixture
+) -> None:
+    mock_entities = [
+        {"PartitionKey": "part1", "RowKey": "row1", "Value": "test1"},
+        {"PartitionKey": "part1", "RowKey": "row2", "Value": "test2"},
+    ]
+
+    async def async_entity_generator():
+        for entity in mock_entities:
+            yield entity
+
+    mock_table_client = MagicMock()
+    mock_table_client.query_entities = lambda query_filter: async_entity_generator()
+
+    mock_client = MagicMock()
+    mock_client.get_table_client = MagicMock(return_value=mock_table_client)
+
+    @asynccontextmanager
+    async def mock_get_client():
+        yield mock_client
+
+    mocker.patch.object(service, "get_client", side_effect=mock_get_client)
+
+    filter_query = "PartitionKey eq 'part1'"
+    entities = await service.query_entities("TestTable", filter_query)
+
+    assert entities == mock_entities

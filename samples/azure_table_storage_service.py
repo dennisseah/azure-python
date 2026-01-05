@@ -32,6 +32,22 @@ async def main() -> None:
     entities = await svc.list_entities(TBL_NAME)
     print(f"Entities in 'TestTable': {entities}")
 
+    await svc.update_entity(
+        table_name=TBL_NAME,
+        entity={"PartitionKey": PART_KEY, "RowKey": ROW_KEY, "Data": "UpdatedData"},
+    )
+
+    await svc.upsert_entity(
+        table_name=TBL_NAME,
+        entity={"PartitionKey": PART_KEY, "RowKey": "row2", "Data": "UpsertedData"},
+    )
+
+    response = await svc.query_entities(
+        table_name=TBL_NAME,
+        filter_query="PartitionKey eq 'partition1'",
+    )
+    print(f"Query result: {response}")
+
     await svc.delete_entity(
         table_name=TBL_NAME,
         partition_key=PART_KEY,
