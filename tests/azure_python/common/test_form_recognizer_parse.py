@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+from unittest.mock import MagicMock, patch
 
 import pytest
 from azure.ai.formrecognizer import (
@@ -27,6 +28,44 @@ def test_table_data_to_csv() -> None:
     csv_output = tbl_data.to_csv()
     expected_csv = "\nHeaderA,HeaderB\nA1,B1\nA2,B2\n\n"
     assert csv_output == expected_csv
+
+
+def test_table_data_to_json() -> None:
+    tbl_data = TableData(
+        rows=[["A1", "B1"], ["A2", "B2"], []],
+        headers=["HeaderA", "HeaderB"],
+        span_offsets={1: [0, 10], 2: [20, 30]},
+    )
+
+    expected_output = [
+        {"HeaderA": "A1", "HeaderB": "B1"},
+        {"HeaderA": "A2", "HeaderB": "B2"},
+    ]
+
+    csv_output = tbl_data.to_json()
+    expected_csv = f"\n{json.dumps(expected_output)}\n"
+    assert csv_output == expected_csv
+
+
+@patch.object(TableData, "to_json")
+@patch.object(TableData, "to_csv")
+def test_format_output(mock_to_csv: MagicMock, mock_to_json: MagicMock) -> None:
+    tbl_data = TableData(
+        rows=[["A1", "B1"], ["A2", "B2"], []],
+        headers=["HeaderA", "HeaderB"],
+        span_offsets={1: [0, 10], 2: [20, 30]},
+    )
+
+    tbl_data.format_output("csv")
+    mock_to_csv.assert_called_once()
+    mock_to_json.assert_not_called()
+
+    mock_to_csv.reset_mock()
+    mock_to_json.reset_mock()
+
+    tbl_data.format_output("json")
+    mock_to_json.assert_called_once()
+    mock_to_csv.assert_not_called()
 
 
 def test_format_table() -> None:

@@ -13,7 +13,7 @@ async def main() -> None:
     svc = container[IAzureFormRecognizer]
     result = await svc.analyze_document(sample)
     if result:
-        print("\n".join(parse(result)))
+        print("\n".join(parse(result, tbl_format="json")))
 
 
 if __name__ == "__main__":

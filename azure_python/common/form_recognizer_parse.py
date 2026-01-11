@@ -1,7 +1,9 @@
 from pathlib import Path
+from typing import Literal
 
 import pandas as pd
 from azure.ai.formrecognizer import AnalyzeResult, DocumentTable
+from flask import json
 from pydantic import BaseModel, Field
 
 current_folder = Path(__file__).parent
@@ -14,12 +16,29 @@ class TableData(BaseModel):
     span_offsets: dict[int, list[int]]
     added: bool = False
 
+    def format_output(self, tbl_format: Literal["csv", "json"]) -> str:
+        if not self.rows[-1]:
+            self.rows.pop()
+
+        if tbl_format == "csv":
+            return self.to_csv()
+        else:
+            return self.to_json()
+
     def to_csv(self) -> str:
         if not self.rows[-1]:
             self.rows.pop()
 
         df = pd.DataFrame(self.rows, columns=self.headers)  # type: ignore
         return f"\n{df.to_csv(index=False)}\n"
+
+    def to_json(self) -> str:
+        if not self.rows[-1]:
+            self.rows.pop()
+
+        df = pd.DataFrame(self.rows, columns=self.headers)  # type: ignore
+        data = df.to_dict(orient="records")
+        return f"\n{json.dumps(data)}\n"
 
 
 def format_table(tbl: DocumentTable) -> TableData:
@@ -61,7 +80,9 @@ def in_table(
     return None
 
 
-def parse(result: AnalyzeResult) -> list[str]:
+def parse(
+    result: AnalyzeResult, tbl_format: Literal["csv", "json"] = "csv"
+) -> list[str]:
     results: list[str] = []
     table_data = []
 
@@ -83,7 +104,7 @@ def parse(result: AnalyzeResult) -> list[str]:
                 )
                 if tbl:
                     if not tbl.added:
-                        results.append(tbl.to_csv())
+                        results.append(tbl.format_output(tbl_format))
                         tbl.added = True
                 else:
                     results.append(p.content)
