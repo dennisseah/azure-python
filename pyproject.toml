@@ -5,7 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-    "aiohttp>=3.13.2",
+    "aiohttp>=3.13.3",
     "azure-ai-evaluation>=1.13.7",
     "azure-ai-ml>=1.30.0",
     "azure-core>=1.37.0",
@@ -19,7 +19,7 @@ dependencies = [
     "pydantic>=2.12.5",
     "python-dotenv>=1.2.1",
     "requests>=2.32.5",
-    "urllib3>=2.6.2",
+    "urllib3>=2.6.3",
     "filelock>=3.20.1",
     "azure-ai-contentsafety>=1.0.0",
     "azure-ai-inference>=1.0.0b9",
@@ -33,6 +33,8 @@ dependencies = [
     "marshmallow>=3.26.2",
     "azure-keyvault-secrets>=4.10.0",
     "azure-data-tables>=12.7.0",
+    "azure-ai-formrecognizer>=3.3.3",
+    "werkzeug>=3.1.5",
 ]
 
 [dependency-groups]

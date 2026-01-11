@@ -45,6 +45,11 @@ tasks:
     cmds:
       - uv run python -m samples.adversarial_simulation_service
 
+  sample-azure-form-recognizer-service:
+    desc: "Runs the Azure Form Recognizer Service sample"
+    cmds:
+      - uv run python -m samples.azure_form_recognizer_service
+
   sample-embedding-service:
     desc: "Runs the Embedding Service sample"
     cmds:

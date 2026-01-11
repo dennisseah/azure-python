@@ -18,6 +18,7 @@ from azure_python.protocols.i_adversarial_simulation_service import (
 from azure_python.protocols.i_azure_blob_storage_service import IAzureBlobStorageService
 from azure_python.protocols.i_azure_cosmos_service import IAzureCosmosService
 from azure_python.protocols.i_azure_defender_service import IAzureDefenderService
+from azure_python.protocols.i_azure_form_recognizer import IAzureFormRecognizer
 from azure_python.protocols.i_azure_keyvault_service import IAzureKeyVaultService
 from azure_python.protocols.i_azure_managed_redis_service import (
     IAzureManagedRedisService,
@@ -190,3 +191,12 @@ def azure_keyvault_service() -> IAzureKeyVaultService:
     )
 
     return container[AzureKeyVaultService]
+
+
+@dependency_definition(container, singleton=True)
+def azure_form_recognizer() -> IAzureFormRecognizer:
+    from azure_python.services.azure_form_recognizer import (
+        AzureFormRecognizer,
+    )
+
+    return container[AzureFormRecognizer]
