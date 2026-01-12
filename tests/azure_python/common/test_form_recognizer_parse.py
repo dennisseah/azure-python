@@ -6,6 +6,7 @@ import pytest
 from azure.ai.formrecognizer import (
     AnalyzeResult,
 )
+from tabulate import tabulate
 
 from azure_python.common.form_recognizer_parse import (
     TableData,
@@ -47,25 +48,59 @@ def test_table_data_to_json() -> None:
     assert csv_output == expected_csv
 
 
-@patch.object(TableData, "to_json")
-@patch.object(TableData, "to_csv")
-def test_format_output(mock_to_csv: MagicMock, mock_to_json: MagicMock) -> None:
+def test_table_data_to_grid() -> None:
     tbl_data = TableData(
         rows=[["A1", "B1"], ["A2", "B2"], []],
         headers=["HeaderA", "HeaderB"],
         span_offsets={1: [0, 10], 2: [20, 30]},
     )
 
+    grid_output = tbl_data.to_grid()
+    expected_output = [
+        {"HeaderA": "A1", "HeaderB": "B1"},
+        {"HeaderA": "A2", "HeaderB": "B2"},
+    ]
+    assert (
+        grid_output
+        == f"\n{tabulate(expected_output, headers='keys', tablefmt='grid')}\n"
+    )
+
+
+@patch.object(TableData, "to_json")
+@patch.object(TableData, "to_csv")
+@patch.object(TableData, "to_grid")
+def test_format_output(
+    mock_to_grid: MagicMock, mock_to_csv: MagicMock, mock_to_json: MagicMock
+) -> None:
+    tbl_data = TableData(
+        rows=[["A1", "B1"], ["A2", "B2"], []],
+        headers=["HeaderA", "HeaderB"],
+        span_offsets={1: [0, 10], 2: [20, 30]},
+    )
+
+    def reset_mocks() -> None:
+        mock_to_csv.reset_mock()
+        mock_to_json.reset_mock()
+        mock_to_grid.reset_mock()
+
     tbl_data.format_output("csv")
     mock_to_csv.assert_called_once()
     mock_to_json.assert_not_called()
+    mock_to_grid.assert_not_called()
 
-    mock_to_csv.reset_mock()
-    mock_to_json.reset_mock()
+    reset_mocks()
 
     tbl_data.format_output("json")
     mock_to_json.assert_called_once()
     mock_to_csv.assert_not_called()
+    mock_to_grid.assert_not_called()
+
+    reset_mocks()
+
+    tbl_data.format_output("grid")
+    mock_to_grid.assert_called_once()
+    mock_to_csv.assert_not_called()
+    mock_to_json.assert_not_called()
 
 
 def test_format_table() -> None:

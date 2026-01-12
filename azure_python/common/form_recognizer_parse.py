@@ -5,6 +5,7 @@ import pandas as pd
 from azure.ai.formrecognizer import AnalyzeResult, DocumentTable
 from flask import json
 from pydantic import BaseModel, Field
+from tabulate import tabulate
 
 current_folder = Path(__file__).parent
 document_path = current_folder.parent.parent / "x.json"
@@ -16,12 +17,11 @@ class TableData(BaseModel):
     span_offsets: dict[int, list[int]]
     added: bool = False
 
-    def format_output(self, tbl_format: Literal["csv", "json"]) -> str:
-        if not self.rows[-1]:
-            self.rows.pop()
-
+    def format_output(self, tbl_format: Literal["csv", "json", "grid"]) -> str:
         if tbl_format == "csv":
             return self.to_csv()
+        elif tbl_format == "grid":
+            return self.to_grid()
         else:
             return self.to_json()
 
@@ -39,6 +39,15 @@ class TableData(BaseModel):
         df = pd.DataFrame(self.rows, columns=self.headers)  # type: ignore
         data = df.to_dict(orient="records")
         return f"\n{json.dumps(data)}\n"
+
+    def to_grid(self) -> str:
+        if not self.rows[-1]:
+            self.rows.pop()
+
+        df = pd.DataFrame(self.rows, columns=self.headers)  # type: ignore
+        data = df.to_dict(orient="records")
+        result = tabulate(data, headers="keys", tablefmt="grid")
+        return f"\n{result}\n"
 
 
 def format_table(tbl: DocumentTable) -> TableData:
@@ -81,7 +90,7 @@ def in_table(
 
 
 def parse(
-    result: AnalyzeResult, tbl_format: Literal["csv", "json"] = "csv"
+    result: AnalyzeResult, tbl_format: Literal["csv", "json", "grid"] = "csv"
 ) -> list[str]:
     results: list[str] = []
     table_data = []
